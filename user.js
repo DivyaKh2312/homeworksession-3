@@ -1,3 +1,4 @@
+
 const readline = require("readline");
 
 // Create a readline interface for command line input/output
@@ -6,58 +7,58 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-class userLibrary {
+class JobLibrary {
   constructor() {
-    this.users = [];
+    this.jobs = [];
   }
 
-  // Method to add a user
-  adduser(user) {
-    if (this._validateuser(user)) {
-      this.users.push(user);
-      console.log(`user '${user.username}' added successfully!`);
+  // Method to add a job
+  addJob(job) {
+    if (this._validateJob(job)) {
+      this.jobs.push(job);
+      console.log(`Job '${job.title}' added successfully!`);
     } else {
       console.log(
-        "Invalid user structure. Please ensure all required fields are present."
+        "Invalid job structure. Please ensure all required fields are present."
       );
     }
   }
 
-  // Method to remove a user by username
-  removeuserField(username) {
-    const user = this.users.find((user) => user.username === username);
+  // Method to remove a job by title
+  removeJobField(title) {
+    const job = this.jobs.find((job) => job.title === title);
 
-    if (!user) {
-      console.log(`user '${username}' not found.`);
+    if (!job) {
+      console.log(`Job '${title}' not found.`);
       return;
     }
 
     rl.question(
-      "Which field do you want to remove? (username, Email, street, age, phone, address)\n",
+      "Which field do you want to remove? (title, type, description, location, salary, company)\n",
       (field) => {
         if (
-          ["username", "Email", "street", "age", "phone"].includes(field)
+          ["title", "type", "description", "location", "salary"].includes(field)
         ) {
-          user[field] = "";
-          console.log(`Field '${field}' has been removed from user '${username}'.`);
-        } else if (field === "address") {
+          job[field] = "";
+          console.log(`Field '${field}' has been removed from job '${title}'.`);
+        } else if (field === "company") {
           rl.question(
-            "Which address field do you want to remove? (name, street, city, postalcode)\n",
-            (addressField) => {
+            "Which company field do you want to remove? (name, description, contactEmail, contactPhone)\n",
+            (companyField) => {
               if (
                 [
                   "name",
-                  "street",
-                  "city",
-                  "postalcode",
-                ].includes(addressField)
+                  "description",
+                  "contactEmail",
+                  "contactPhone",
+                ].includes(companyField)
               ) {
-                user.address[addressField] = "";
+                job.company[companyField] = "";
                 console.log(
-                  `address field '${addressField}' has been removed from user '${username}'.`
+                  `Company field '${companyField}' has been removed from job '${title}'.`
                 );
               } else {
-                console.log("Invalid address field. Please try again.");
+                console.log("Invalid company field. Please try again.");
               }
               userMenu();
             }
@@ -70,78 +71,78 @@ class userLibrary {
     );
   }
 
-  // Method to update a user by username
-  updateuser(username, updatedFields) {
-    const user = this.users.find((user) => user.username === username);
-    if (user) {
-      Object.assign(user, updatedFields);
-      console.log(`user '${username}' updated successfully!`);
+  // Method to update a job by title
+  updateJob(title, updatedFields) {
+    const job = this.jobs.find((job) => job.title === title);
+    if (job) {
+      Object.assign(job, updatedFields);
+      console.log(`Job '${title}' updated successfully!`);
     } else {
-      console.log(`user '${username}' not found.`);
+      console.log(`Job '${title}' not found.`);
     }
   }
 
-  // Method to delete a user by username
-  deleteuser(username) {
-    const userIndex = this.users.findIndex((user) => user.username === username);
+  // Method to delete a job by title
+  deleteJob(title) {
+    const jobIndex = this.jobs.findIndex((job) => job.title === title);
 
-    if (userIndex !== -1) {
-      this.users.splice(userIndex, 1);
-      console.log(`user '${username}' deleted successfully.`);
+    if (jobIndex !== -1) {
+      this.jobs.splice(jobIndex, 1);
+      console.log(`Job '${title}' deleted successfully.`);
     } else {
-      console.log(`user '${username}' not found.`);
+      console.log(`Job '${title}' not found.`);
     }
   }
 
-  // Method to list all users
-  listusers() {
-    if (this.users.length === 0) {
-      console.log("No users found.");
+  // Method to list all jobs
+  listJobs() {
+    if (this.jobs.length === 0) {
+      console.log("No jobs found.");
     } else {
-      console.log("Listing all users:");
-      this.users.forEach((user, index) => {
-        console.log(`\nuser ${index + 1}:`);
-        console.log(`username: ${user.username}`);
-        console.log(`Email: ${user.Email}`);
-        console.log(`street: ${user.street}`);
-        console.log(`age: ${user.age}`);
-        console.log(`phone: ${user.phone}`);
-        console.log("address:");
-        console.log(`  - address name: ${user.address.name}`);
-        console.log(`  - street: ${user.address.street}`);
-        console.log(`  - address Email: ${user.address.city}`);
-        console.log(`  - address Phone: ${user.address.postalcode}`);
+      console.log("Listing all jobs:");
+      this.jobs.forEach((job, index) => {
+        console.log(`\nJob ${index + 1}:`);
+        console.log(`Title: ${job.title}`);
+        console.log(`Type: ${job.type}`);
+        console.log(`Description: ${job.description}`);
+        console.log(`Location: ${job.location}`);
+        console.log(`Salary: ${job.salary}`);
+        console.log("Company:");
+        console.log(`  - Company name: ${job.company.name}`);
+        console.log(`  - Company description: ${job.company.description}`);
+        console.log(`  - Company Email: ${job.company.contactEmail}`);
+        console.log(`  - Company Phone: ${job.company.contactPhone}`);
       });
     }
   }
 
-  // Internal method to validate user structure
-  _validateuser(user) {
+  // Internal method to validate job structure
+  _validateJob(job) {
     const requiredFields = [
-      "username",
-      "Email",
-      "street",
-      "age",
-      "phone",
-      "address",
+      "title",
+      "type",
+      "description",
+      "location",
+      "salary",
+      "company",
     ];
-    const requiredaddressFields = [
+    const requiredCompanyFields = [
       "name",
-      "street",
-      "city",
-      "postalcode",
+      "description",
+      "contactEmail",
+      "contactPhone",
     ];
 
-    // Check if required fields are present in user object
+    // Check if required fields are present in job object
     for (let field of requiredFields) {
-      if (!user.hasOwnProperty(field)) {
+      if (!job.hasOwnProperty(field)) {
         return false;
       }
     }
 
-    // Check if required fields are present in address object
-    for (let field of requiredaddressFields) {
-      if (!user.address || !user.address.hasOwnProperty(field)) {
+    // Check if required fields are present in company object
+    for (let field of requiredCompanyFields) {
+      if (!job.company || !job.company.hasOwnProperty(field)) {
         return false;
       }
     }
@@ -150,93 +151,93 @@ class userLibrary {
   }
 }
 
-// Initialize user library
-const userLib = new userLibrary();
+// Initialize job library
+const jobLib = new JobLibrary();
 
-// Function to prompt the user for updated user details
-function updateuserFromInput(username) {
-  if (userLib.users.length === 0) {
-    console.log("No users available to update.");
-    userMenu(); // Return to the menu if no users are available
+// Function to prompt the user for updated job details
+function updateJobFromInput(title) {
+  if (jobLib.jobs.length === 0) {
+    console.log("No jobs available to update.");
+    userMenu(); // Return to the menu if no jobs are available
     return;
   }
-  const updatedFields = { address: {} };
+  const updatedFields = { company: {} };
 
-  rl.question("Enter new user username (or leave empty to skip): ", (newusername) => {
-    if (newusername) updatedFields.username = newusername;
+  rl.question("Enter new job title (or leave empty to skip): ", (newTitle) => {
+    if (newTitle) updatedFields.title = newTitle;
 
     rl.question(
-      "Enter new user Email  (or leave empty to skip): ",
-      (newEmail) => {
-        if (newEmail) updatedFields.Email = newEmail;
+      "Enter new job type (Full-Time/Part-Time) (or leave empty to skip): ",
+      (newType) => {
+        if (newType) updatedFields.type = newType;
 
         rl.question(
-          "Enter new user street (or leave empty to skip): ",
-          (newstreet) => {
-            if (newstreet) updatedFields.street = newstreet;
+          "Enter new job description (or leave empty to skip): ",
+          (newDescription) => {
+            if (newDescription) updatedFields.description = newDescription;
 
             rl.question(
-              "Enter new user age (or leave empty to skip): ",
-              (newage) => {
-                if (newage) updatedFields.age = newage;
+              "Enter new job location (or leave empty to skip): ",
+              (newLocation) => {
+                if (newLocation) updatedFields.location = newLocation;
 
                 rl.question(
-                  "Enter new user phone (or leave empty to skip): ",
-                  (newphone) => {
-                    if (newphone) updatedFields.phone = newphone;
+                  "Enter new job salary (or leave empty to skip): ",
+                  (newSalary) => {
+                    if (newSalary) updatedFields.salary = newSalary;
 
                     rl.question(
-                      "Enter new address name (or leave empty to skip): ",
-                      (newaddressName) => {
-                        if (newaddressName)
-                          updatedFields.address.name = newaddressName;
+                      "Enter new company name (or leave empty to skip): ",
+                      (newCompanyName) => {
+                        if (newCompanyName)
+                          updatedFields.company.name = newCompanyName;
 
                         rl.question(
-                          "Enter new street (or leave empty to skip): ",
-                          (newaddressstreet) => {
-                            if (newaddressstreet)
-                              updatedFields.address.street =
-                                newaddressstreet;
+                          "Enter new company description (or leave empty to skip): ",
+                          (newCompanyDescription) => {
+                            if (newCompanyDescription)
+                              updatedFields.company.description =
+                                newCompanyDescription;
 
                             rl.question(
-                              "Enter new address  (or leave empty to skip): ",
-                              (newcity) => {
-                                if (newcity)
-                                  updatedFields.address.city =
-                                    newcity;
+                              "Enter new company contact email (or leave empty to skip): ",
+                              (newContactEmail) => {
+                                if (newContactEmail)
+                                  updatedFields.company.contactEmail =
+                                    newContactEmail;
 
                                 rl.question(
-                                  "Enter new address postal code (or leave empty to skip): ",
-                                  (newpostalcode) => {
-                                    if (newpostalcode)
-                                      updatedFields.address.postalcode =
-                                        newpostalcode;
+                                  "Enter new company contact phone (or leave empty to skip): ",
+                                  (newContactPhone) => {
+                                    if (newContactPhone)
+                                      updatedFields.company.contactPhone =
+                                        newContactPhone;
 
                                     // Only update the fields that have been provided
-                                    const currentuser = userLib.users.find(
-                                      (user) => user.username === username
+                                    const currentJob = jobLib.jobs.find(
+                                      (job) => job.title === title
                                     );
 
-                                    // Merge only non-empty fields into the existing user
+                                    // Merge only non-empty fields into the existing job
                                     Object.keys(updatedFields).forEach(
                                       (field) => {
-                                        if (field === "address") {
+                                        if (field === "company") {
                                           Object.keys(
-                                            updatedFields.address
-                                          ).forEach((addressField) => {
+                                            updatedFields.company
+                                          ).forEach((companyField) => {
                                             if (
-                                              updatedFields.address[
-                                                addressField
+                                              updatedFields.company[
+                                                companyField
                                               ]
                                             ) {
-                                              currentuser.address[addressField] =
-                                                updatedFields.address[
-                                                  addressField
+                                              currentJob.company[companyField] =
+                                                updatedFields.company[
+                                                  companyField
                                                 ];
                                             }
                                           });
                                         } else if (updatedFields[field]) {
-                                          currentuser[field] =
+                                          currentJob[field] =
                                             updatedFields[field];
                                         }
                                       }
@@ -244,7 +245,7 @@ function updateuserFromInput(username) {
 
                                     // Confirm the update
                                     console.log(
-                                      `user '${username}' updated successfully!`
+                                      `Job '${title}' updated successfully!`
                                     );
 
                                     // Go back to the main menu
@@ -271,54 +272,54 @@ function updateuserFromInput(username) {
 // Menu function for user choice
 function userMenu() {
   rl.question(
-    "Select an option:\n1. Add user\n2. Remove user\n3. Update user\n4. Delete user\n5. List users\n6. Exit\n",
+    "Select an option:\n1. Add Job\n2. Remove Job\n3. Update Job\n4. Delete Job\n5. List Jobs\n6. Exit\n",
     (choice) => {
       switch (choice) {
         case "1":
-          // Add user
-          adduserFromInput();
+          // Add Job
+          addJobFromInput();
           break;
 
         case "2":
-          // Remove user field
-          if (userLib.users.length === 0) {
-            console.log("No users available to modify.");
+          // Remove Job field
+          if (jobLib.jobs.length === 0) {
+            console.log("No jobs available to modify.");
             userMenu();
           } else {
             rl.question(
-              "Enter the username of the user you want to modify: ",
-              (removeusername) => {
-                userLib.removeuserField(removeusername);
+              "Enter the title of the job you want to modify: ",
+              (removeTitle) => {
+                jobLib.removeJobField(removeTitle);
               }
             );
           }
           return;
 
         case "3":
-          // Update user
-          if (userLib.users.length === 0) {
-            console.log("No users available to update.");
+          // Update Job
+          if (jobLib.jobs.length === 0) {
+            console.log("No jobs available to update.");
             userMenu();
           } else {
             rl.question(
-              "Enter the username of the user you want to update: ",
-              (updateusername) => {
-                updateuserFromInput(updateusername);
+              "Enter the title of the job you want to update: ",
+              (updateTitle) => {
+                updateJobFromInput(updateTitle);
               }
             );
           }
           return;
 
         case "4":
-          // Delete user
-          if (userLib.users.length === 0) {
-            console.log("No users available to delete.");
+          // Delete Job
+          if (jobLib.jobs.length === 0) {
+            console.log("No jobs available to delete.");
             userMenu();
           } else {
             rl.question(
-              "Enter the username of the user you want to delete: ",
-              (deleteusername) => {
-                userLib.deleteuser(deleteusername);
+              "Enter the title of the job you want to delete: ",
+              (deleteTitle) => {
+                jobLib.deleteJob(deleteTitle);
                 userMenu();
               }
             );
@@ -326,8 +327,8 @@ function userMenu() {
           return;
 
         case "5":
-          // List all users
-          userLib.listusers();
+          // List all jobs
+          jobLib.listJobs();
           userMenu();
           return;
 
@@ -347,45 +348,45 @@ function userMenu() {
   );
 }
 
-// Function to prompt the user for user details
-function adduserFromInput() {
-  const user = { address: {} };
+// Function to prompt the user for job details
+function addJobFromInput() {
+  const job = { company: {} };
 
-  rl.question("Enter user username: ", (username) => {
-    user.username = username;
+  rl.question("Enter job title: ", (title) => {
+    job.title = title;
 
-    rl.question("Enter user Email : ", (Email) => {
-      user.Email = Email;
+    rl.question("Enter job type (Full-Time/Part-Time): ", (type) => {
+      job.type = type;
 
-      rl.question("Enter user street: ", (street) => {
-        user.street = street;
+      rl.question("Enter job description: ", (description) => {
+        job.description = description;
 
-        rl.question("Enter user age: ", (age) => {
-          user.age = age;
+        rl.question("Enter job location: ", (location) => {
+          job.location = location;
 
-          rl.question("Enter user phone: ", (phone) => {
-            user.phone = phone;
+          rl.question("Enter job salary: ", (salary) => {
+            job.salary = salary;
 
-            rl.question("Enter address name: ", (addressName) => {
-              user.address.name = addressName;
+            rl.question("Enter company name: ", (companyName) => {
+              job.company.name = companyName;
 
               rl.question(
-                "Enter street: ",
-                (addressstreet) => {
-                  user.address.street = addressstreet;
+                "Enter company description: ",
+                (companyDescription) => {
+                  job.company.description = companyDescription;
 
                   rl.question(
-                    "Enter address : ",
-                    (city) => {
-                      user.address.city = city;
+                    "Enter company contact email: ",
+                    (contactEmail) => {
+                      job.company.contactEmail = contactEmail;
 
                       rl.question(
-                        "Enter address postal code: ",
-                        (postalcode) => {
-                          user.address.postalcode = postalcode;
+                        "Enter company contact phone: ",
+                        (contactPhone) => {
+                          job.company.contactPhone = contactPhone;
 
-                          // Add the user to the library
-                          userLib.adduser(user);
+                          // Add the job to the library
+                          jobLib.addJob(job);
 
                           // Go back to the main menu
                           userMenu();
